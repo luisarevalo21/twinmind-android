@@ -9,14 +9,18 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.luisarevalo21.twinmindandroid"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.luisarevalo21.twinmindandroid",
+      "googleServicesFile": "./google-services.json",
+      "permissions": ["RECORD_AUDIO"]
     },
     "web": {
       "bundler": "metro",
@@ -37,6 +41,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "01a889e7-e4d1-4397-b94e-cf013ec54711"
+      }
     }
   }
 }

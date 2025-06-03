@@ -1,29 +1,30 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { Stack } from "expo-router";
+import { useEffect, useState } from "react";
+import { UserProvider, useUser } from "./context/userContext";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+function RootLayoutInner() {
+  const { setUser } = useUser();
+  const [loading, setLoading] = useState(true);
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  useEffect(() => {
+    GoogleSignin.configure({ webClientId: "894785707749-qstkfhn4qkbmvgvphgj915l42245favc.apps.googleusercontent.com" });
+    const userInfo = GoogleSignin.getCurrentUser();
+    setUser(userInfo?.user ?? null);
+    setLoading(false);
+  }, []);
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
+  if (loading) {
     return null;
   }
 
+  return <Stack></Stack>;
+}
+
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <UserProvider>
+      <RootLayoutInner />
+    </UserProvider>
   );
 }
