@@ -5,13 +5,14 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 ## Features
 
 - **Google Sign-In:** Users can sign in with Google. Sign-in is fully functional and user data is added to the database.
-- **Audio Recording:** Users can record audio messages. After recording, playback is available within the app.
+- **Audio Recording & Transcription:** Users can record audio messages. After recording, the audio is transcribed to text using OpenAI Whisper and the transcription is displayed in the app.
+- **Audio Playback:** Playback is available within the app after recording.
 - **File-based Routing:** Uses Expo Router for navigation.
 
 ## Known Issues
 
 - **Video Recording:** Video recording is not working properly at this time.
-- **Audio Recording:** Audio recording and playback are functional, but advanced features (like waveform or upload) are not yet implemented.
+- **Audio Recording:** Audio recording and playback are functional, but advanced features (like waveform) are not yet implemented.
 
 ## Getting Started
 
