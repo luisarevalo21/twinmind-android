@@ -2,7 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { api } from "./api/index";
 import AudioCapture from "./components/audioCapture";
 import Card from "./components/card"; // Assuming you have a Card component
@@ -24,7 +24,9 @@ export default function Dashboard() {
   const [modalVisible, setModalVisible] = useState(false);
   const [showQuestionModal, setShowQuestionModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  const { user } = useUser();
+  const { user, setUser } = useUser();
+  const [signingOut, setSigningOut] = useState(false);
+
   useEffect(() => {
     const fetchUsersMemories = async () => {
       const response = await api.get(`/api/user/memories${user.userId}`);
@@ -41,8 +43,18 @@ export default function Dashboard() {
   }, []);
 
   const handleSignOut = async () => {
-    await GoogleSignin.signOut();
-    router.replace("/");
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      await GoogleSignin.signOut();
+      router.replace("/");
+      setUser(null);
+      return;
+    } catch (error) {
+      console.error("Sign out error:", error);
+    } finally {
+      setSigningOut(false);
+    }
   };
   const handleCardPress = card => {
     setModalVisible(true);
@@ -83,10 +95,16 @@ export default function Dashboard() {
       />
     );
   }
-
+  if (signingOut) return null;
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.signOutIcon} onPress={handleSignOut}>
+      <StatusBar barStyle="dark-content" />
+      <TouchableOpacity
+        style={styles.signOutIcon}
+        onPress={handleSignOut}
+        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+        disabled={signingOut}
+      >
         <MaterialIcons name="logout" size={28} color="#333" />
       </TouchableOpacity>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -98,9 +116,7 @@ export default function Dashboard() {
           setShowQuestionModal(false);
           setSelectedCard(null);
         }}
-        onDelete={() => {
-          console.log("Delete pressed");
-        }}
+        onDelete={() => {}}
         questionModal={true}
         card={selectedCard}
         response={selectedCard?.response}
@@ -128,14 +144,19 @@ const styles = StyleSheet.create({
   },
   signOutIcon: {
     position: "absolute",
-    top: 0,
-    left: 1,
-    zIndex: 1,
+    top: 10,
+    left: 16,
+    zIndex: 10,
+    padding: 8,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    elevation: 2,
   },
   tabsContainer: {
     flexDirection: "row",
     backgroundColor: "#e0e0e0",
     borderRadius: 8,
+    marginTop: 16,
     padding: 4,
   },
   tabModalContainer: {
@@ -143,7 +164,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#e0e0e0",
     borderRadius: 8,
     padding: 4,
-    marginTop: 16,
+    marginTop: 26,
   },
   tabButton: {
     paddingVertical: 8,

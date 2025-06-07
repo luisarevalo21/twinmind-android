@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function AudioPlayback({ uri }: { uri: string }) {
@@ -23,6 +23,12 @@ export default function AudioPlayback({ uri }: { uri: string }) {
     });
     await sound.playAsync();
   };
+
+  useEffect(() => {
+    return () => {
+      stopAudio();
+    };
+  }, []);
 
   const stopAudio = async () => {
     if (soundRef.current) {

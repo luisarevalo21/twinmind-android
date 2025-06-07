@@ -7,5 +7,5 @@ const router = express.Router();
 router.get("/", userController.getUser);
 
 router.post("/newUser", userController.newUser);
-router.post("/:userId/message", userController.message);
+// router.post("/:userId/message", userController.message);
 module.exports = router;

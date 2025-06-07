@@ -19,9 +19,7 @@ const getUser = async (req, res) => {
 };
 
 const newUser = async (req, res) => {
-  console.log("Received request to create new user:", req.body);
   const { name, email, userId } = req.body;
-  console.log("Creating new user:", { name, email, userId });
   try {
     const userRef = db.collection("users");
     // Check if user already exists

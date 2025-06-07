@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
   text: {
     color: "#fff",
     borderRadius: 5,
-    backgroundColor: "#3b3b3b",
   },
   subtext: {
     color: "#fff",

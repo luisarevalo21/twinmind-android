@@ -7,11 +7,13 @@ const multer = require("multer");
 const PORT = process.env.PORT || 3000;
 const userRouter = require("./routes/userRouter");
 const memoryRouter = require("./routes/memoryRouter");
-// const audioRouter = require("./routes/audioRouter");
+const audioRouter = require("./routes/audioRouter");
 const path = require("path");
 
 const VerifyToken = require("./verifyToken");
-
+// if (typeof globalThis.File === "undefined") {
+//   globalThis.File = require("node:buffer").File;
+// }
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -40,6 +42,8 @@ app.get("/", (req, res) => {
 app.use("/api/user", userRouter);
 
 app.use("/api/memory", memoryRouter);
+
+app.use("/api/audio", upload.single("audio"), audioRouter);
 // app.use("/api/memories", VerifyToken, upload.single("audio"), audioRouter);
 
 app.listen(PORT, () => {

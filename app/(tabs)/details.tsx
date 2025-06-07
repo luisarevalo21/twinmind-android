@@ -4,8 +4,6 @@ export default function Details() {
   const [data, setData] = useState(null);
   useEffect(() => {
     // Simulate fetching data
-
-    console.log("Fetching data for details page...");
   }, []);
 
   return (
